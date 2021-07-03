@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+            var name = prompt("Enter Name")
+            var socket = io()
+            socket.emit("name",name)
+            socket.on('onlineusers',(msg)=>{
+                document.querySelector('#users').innerHTML=''
+                for(n in msg)
+                {
+                    const li = document.createElement('li')
+                    li.innerHTML=msg[n]
+                    document.querySelector('#users').append(li)
+                }
+            })
+            socket.on('refresh-names',()=>{
+                socket.emit("name",name)
+            })
+            socket.on('called',(msg)=>{
+                if(msg.calleeName==name)
+                {
+                    let btn = document.createElement('button')
+                    btn.innerHTML=`Accept incoming call from ${msg.callerName}`
+                    document.body.appendChild(btn)
+                    
+                    document.querySelector('button').onclick = () =>{
+                        window.location.href = `/${msg.callerName}`
+                    }
+                }
+            })
+            document.querySelector('form').onsubmit = () =>{
+                const callee = document.querySelector('#callee').value;
+                
+                socket.emit('call',{
+                    callerName: name,
+                    calleeName: callee
+                })
+
+                window.location.href = `/${name}`
+                return false
+            }
+        })
+        
+    </script>
+</head>
+<body>
+    <h1>Welcome To Microsoft Teams</h1>
+    <h2>Online Users</h2>
+    <ul id="users"></ul>
+    <h2>Call</h2>
+    <form>
+        <input id="callee" placeholder="username" type="text">
+        <input id="submit" type="submit" value="call">
+    </form>
+    
+</body>
+</html>

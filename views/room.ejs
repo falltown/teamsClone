@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room</title>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const roomId = "<%= id %>"
+        var socket = io()
+        var peer = new Peer()
+        peer.on('open',(id)=>{
+            console.log(id)
+            socket.emit('new-participant',{
+                roomId: roomId,
+                peerId: id
+            })
+        })
+        socket.on('new-peer',(peerId)=>{
+            var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            getUserMedia({video: true, audio: true}, function(stream) {
+            var call = peer.call(peerId, stream);
+            call.on('stream', function(remoteStream) {
+                let video = document.createElement('video')
+                video.srcObject = stream
+                video.addEventListener('loadedmetadata',  () => {
+                    video.play();
+                })
+                document.querySelector('#videos').appendChild(video)
+            });
+            }, function(err) {
+            console.log('Failed to get local stream' ,err);
+            });
+        })
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            peer.on('call', function(call) {
+            getUserMedia({video: true, audio: true}, function(stream) {
+            call.answer(stream); // Answer the call with an A/V stream.
+            call.on('stream', function(remoteStream) {
+                let video = document.createElement('video')
+                video.srcObject = stream
+                video.addEventListener('loadedmetadata',  () => {
+                    video.play();
+                })
+                document.querySelector('#videos').appendChild(video)
+            });
+            }, function(err) {
+                console.log('Failed to get local stream' ,err);
+            });
+        });
+        
+    </script>
+</head>
+<body>
+    <div id="videos">
+
+    </div>
+</body>
+</html>
