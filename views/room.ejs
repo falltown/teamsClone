@@ -24,6 +24,7 @@
             getUserMedia({video: true, audio: true}, function(stream) {
             var call = peer.call(peerId, stream);
             call.on('stream', function(remoteStream) {
+                console.log('call')
                 let video = document.createElement('video')
                 video.srcObject = remoteStream
                 video.addEventListener('loadedmetadata',  () => {
@@ -40,6 +41,7 @@
             getUserMedia({video: true, audio: true}, function(stream) {
             call.answer(stream); // Answer the call with an A/V stream.
             call.on('stream', function(remoteStream) {
+                console.log("answer")
                 let video = document.createElement('video')
                 video.srcObject = remoteStream
                 video.addEventListener('loadedmetadata',  () => {
@@ -47,6 +49,9 @@
                 })
                 document.querySelector('#videos').appendChild(video)
             });
+            call.on('close', ()=> {
+                video.remove();
+            })
             }, function(err) {
                 console.log('Failed to get local stream' ,err);
             });
