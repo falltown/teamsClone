@@ -9,6 +9,8 @@ var names = []
 
 app.set('view engine', 'ejs');
 
+
+
 app.get('/:room',(req,res)=>{
     res.render('room.ejs',{ id: req.params.room })
 })

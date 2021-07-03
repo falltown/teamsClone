@@ -28,14 +28,15 @@
                 {
                     let btn = document.createElement('button')
                     btn.innerHTML=`Accept incoming call from ${msg.callerName}`
+                    btn.setAttribute("id","accept")
                     document.body.appendChild(btn)
                     
-                    document.querySelector('button').onclick = () =>{
+                    document.querySelector('#accept').onclick = () =>{
                         window.location.href = `/${msg.callerName}`
                     }
                 }
             })
-            document.querySelector('form').onsubmit = () =>{
+            document.querySelector('#calling-form').onsubmit = () =>{
                 const callee = document.querySelector('#callee').value;
                 
                 socket.emit('call',{
@@ -46,6 +47,12 @@
                 window.location.href = `/${name}`
                 return false
             }
+            document.querySelector('#new-room').onsubmit = () =>{
+                const customId = document.querySelector('#room-id').value
+
+                window.location.href = `/${customId}`
+                return false;
+            }
         })
         
     </script>
@@ -55,9 +62,14 @@
     <h2>Online Users</h2>
     <ul id="users"></ul>
     <h2>Call</h2>
-    <form>
+    <form id="calling-form">
         <input id="callee" placeholder="username" type="text">
-        <input id="submit" type="submit" value="call">
+        <input type="submit" value="call">
+    </form>
+    <h2>Custom Room</h2>
+    <form id="new-room">
+        <input id="room-id" placeholder="room id" type="text">
+        <input type="submit" value="Join">
     </form>
     
 </body>
