@@ -19,12 +19,13 @@
             })
         })
         socket.on('new-peer',(peerId)=>{
+            console.log("newpeer")
             var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             getUserMedia({video: true, audio: true}, function(stream) {
             var call = peer.call(peerId, stream);
             call.on('stream', function(remoteStream) {
                 let video = document.createElement('video')
-                video.srcObject = stream
+                video.srcObject = remoteStream
                 video.addEventListener('loadedmetadata',  () => {
                     video.play();
                 })
@@ -40,7 +41,7 @@
             call.answer(stream); // Answer the call with an A/V stream.
             call.on('stream', function(remoteStream) {
                 let video = document.createElement('video')
-                video.srcObject = stream
+                video.srcObject = remoteStream
                 video.addEventListener('loadedmetadata',  () => {
                     video.play();
                 })
