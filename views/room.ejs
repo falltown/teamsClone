@@ -11,53 +11,77 @@
         const roomId = "<%= id %>"
         var socket = io()
         var peer = new Peer()
-        peer.on('open',(id)=>{
+        
+
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+            
+            getUserMedia({video: true, audio: true}, (mystream) => {
+                
+                let video = document.createElement('video')
+                video.srcObject = mystream
+                video.addEventListener('loadedmetadata',  () => {
+                        video.play();
+                })
+                document.querySelector('#videos').appendChild(video)
+
+                peer.on('call',(call)=>{
+                    call.answer(mystream)
+                    let video = document.createElement('video')
+                    call.on('stream', (remoteStream) => {
+                        video.srcObject = remoteStream
+                        video.addEventListener('loadedmetadata',  () => {
+                                video.play();
+                        })
+                        document.querySelector('#videos').appendChild(video)
+                    });
+                    call.on('close',()=>{
+                        video.remove();
+                    })
+                })
+
+                socket.on('new-peer',(peerId)=>{
+                    const call = peer.call(peerId, mystream)
+                    let video = document.createElement('video')
+                    call.on('stream', (remoteStream) => {
+                        video.srcObject = remoteStream
+                        video.addEventListener('loadedmetadata',  () => {
+                            video.play();
+                        })
+                        document.querySelector('#videos').appendChild(video)
+                    });
+                    call.on('close',()=>{
+                        video.remove();
+                    })
+                })
+
+            }, function(err) {
+                console.log('Failed to get local stream' ,err);
+            });
+
+
+            peer.on('open',(id)=>{
             console.log(id)
             socket.emit('new-participant',{
                 roomId: roomId,
                 peerId: id
             })
         })
-        socket.on('new-peer',(peerId)=>{
-            console.log("newpeer")
-            var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            getUserMedia({video: true, audio: true}, function(stream) {
-            var call = peer.call(peerId, stream);
-            call.on('stream', function(remoteStream) {
-                console.log('call')
-                let video = document.createElement('video')
-                video.srcObject = remoteStream
-                video.addEventListener('loadedmetadata',  () => {
-                    video.play();
-                })
-                document.querySelector('#videos').appendChild(video)
-            });
-            }, function(err) {
-            console.log('Failed to get local stream' ,err);
-            });
-        })
-        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            peer.on('call', function(call) {
-            getUserMedia({video: true, audio: true}, function(stream) {
-            call.answer(stream); // Answer the call with an A/V stream.
-            call.on('stream', function(remoteStream) {
-                console.log("answer")
-                let video = document.createElement('video')
-                video.srcObject = remoteStream
-                video.addEventListener('loadedmetadata',  () => {
-                    video.play();
-                })
-                document.querySelector('#videos').appendChild(video)
-            });
-            call.on('close', ()=> {
-                video.remove();
-            })
-            }, function(err) {
-                console.log('Failed to get local stream' ,err);
-            });
-        });
         
     </script>
+
+    <style>
+        #videos{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        video{
+            height: 300px;
+            width: 400px;
+            object-fit: cover;
+            padding: 8px;
+        }
+    </style>
 </head>
 <body>
     <div id="videos">
