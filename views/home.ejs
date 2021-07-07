@@ -9,6 +9,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', ()=>{
             var name = localStorage.getItem('username')
+            if(localStorage.getItem('token')==null)
+            {
+                window.location.href = "/"
+            }
             var socket = io()
             socket.emit("name",name)
             socket.on('onlineusers',(msg)=>{
@@ -58,7 +62,7 @@
     </script>
 </head>
 <body>
-    <h1>Welcome To Microsoft Teams</h1>
+    <h1>Teams (clone)</h1>
     <h2>Online Users</h2>
     <ul id="users"></ul>
     <h2>Call</h2>

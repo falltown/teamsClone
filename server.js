@@ -118,6 +118,12 @@ io.on('connection', (socket) => {
         socket.join(msg.roomId)
         socket.broadcast.to(msg.roomId).emit('new-peer', msg.peerId)
     })
+
+    socket.on('send message',(msg)=>{
+        console.log(msg)
+        // socket.join(msg.roomId)
+        io.to(msg.roomId).emit('new-message', msg.message)
+    })
 })
 
 const PORT = process.env.PORT || 5000

@@ -11,7 +11,7 @@
         const roomId = "<%= id %>"
         var socket = io()
         var peer = new Peer()
-        
+        var name = localStorage.getItem('username')
 
         var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             
@@ -35,9 +35,6 @@
                         })
                         document.querySelector('#videos').appendChild(video)
                     });
-                    call.on('close',()=>{
-                        video.remove();
-                    })
                 })
 
                 socket.on('new-peer',(peerId)=>{
@@ -50,15 +47,37 @@
                         })
                         document.querySelector('#videos').appendChild(video)
                     });
-                    call.on('close',()=>{
-                        video.remove();
-                    })
                 })
 
             }, function(err) {
                 console.log('Failed to get local stream' ,err);
             });
 
+            document.addEventListener('DOMContentLoaded', ()=>{
+                let form = document.querySelector('#textbox')
+                let input = document.querySelector('#input')
+                let messages = document.querySelector('#messages')
+
+                form.addEventListener('submit',(f)=>{
+                    f.preventDefault()
+                    if(input.value)
+                    {
+                        socket.emit('send message',{
+                            roomId: roomId,
+                            message: name+": "+input.value
+                        })
+                        input.value='';
+                    }
+                })
+
+                socket.on('new-message',(msg)=>{
+                    console.log(msg)
+                    let item = document.createElement('li');
+                    item.textContent = msg;
+                    messages.appendChild(item);
+                })
+                
+            })
 
             peer.on('open',(id)=>{
             console.log(id)
@@ -88,5 +107,12 @@
     <div id="videos">
 
     </div>
+
+    <ul id="messages"></ul>
+    <form id="textbox" action="">
+        <input id="input" autocomplete="off"/>
+        <button>Send</button>
+    </form>
+    <button onclick="window.location.href='/home'">End Call</button>
 </body>
 </html>
