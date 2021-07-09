@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teams</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="/socket.io/socket.io.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', ()=>{
@@ -58,23 +59,54 @@
                 return false;
             }
         })
-        
     </script>
+        
+    <style>
+        body{
+            background-color: azure;
+        }
+        form{
+            max-width: 350px;
+            margin: auto;
+            
+            /* background-color: white; */
+        }
+        h1{
+            /* background-color: lightblue; */
+            /* color: white; */
+        }
+    </style>
 </head>
 <body>
-    <h1>Teams (clone)</h1>
-    <h2>Online Users</h2>
-    <ul id="users"></ul>
-    <h2>Call</h2>
-    <form id="calling-form">
-        <input id="callee" placeholder="username" type="text">
-        <input type="submit" value="call">
-    </form>
-    <h2>Custom Room</h2>
-    <form id="new-room">
-        <input id="room-id" placeholder="room id" type="text">
-        <input type="submit" value="Join">
-    </form>
+    
+    <div class="container">
+        <h1 class="display-3 mt-4 mb-4">Teams (clone)</h1>
+        <div class="row">
+            
+            <div class="col">
+                <div class="container left">
+                    <h2 class="display-6">Online Users</h2>
+                    <ul class="mt-4" id="users"></ul>
+                </div>
+            </div>
+            
+            <div class="col">
+                <div class="container right">
+                    <h2 class="mb-3 display-6">Call</h2>
+                    <form id="calling-form">
+                        <input class="form-control" id="callee" placeholder="username" type="text">
+                        <input class="form-control btn btn-dark mt-3" type="submit" value="call">
+                    </form>
+                    <h2 class="mb-3 mt-5 display-6">Custom Room</h2>
+                    <form id="new-room">
+                        <input class="form-control" id="room-id" placeholder="room id" type="text">
+                        <input class="form-control btn btn-dark mt-3" type="submit" value="Join">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
 </body>
 </html>
