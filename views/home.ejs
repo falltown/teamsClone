@@ -34,7 +34,9 @@
                     let btn = document.createElement('button')
                     btn.innerHTML=`Accept incoming call from ${msg.callerName}`
                     btn.setAttribute("id","accept")
-                    document.body.appendChild(btn)
+                    btn.setAttribute('class',"btn btn-dark form-control")
+                    // document.body.appendChild(btn)
+                    document.querySelector('#incoming-call').appendChild(btn)
                     
                     document.querySelector('#accept').onclick = () =>{
                         window.location.href = `room/${msg.callerName}`
@@ -75,6 +77,10 @@
             /* background-color: lightblue; */
             /* color: white; */
         }
+        #accept{
+            /* max-width: 300px; */
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -84,9 +90,9 @@
         <div class="row">
             
             <div class="col">
-                <div class="container left">
-                    <h2 class="display-6">Online Users</h2>
-                    <ul class="mt-4" id="users"></ul>
+                <div class="container left" id="incoming-call">
+                    <h2 class="display-6 mb-4">Online Users</h2>
+                    <ul class="mb-4" id="users"></ul>
                 </div>
             </div>
             

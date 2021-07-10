@@ -7,6 +7,7 @@ const server = http.Server(app)
 const { Server } = require('socket.io')
 const io= new Server(server)
 const jwt = require('jsonwebtoken');
+const { disconnect } = require('process');
 const JWT_SECRET = 'wenwajfkwiblebakjubwdfbwaugbuwb'
 
 var names = [] 
@@ -117,6 +118,10 @@ io.on('connection', (socket) => {
         console.log(msg)
         socket.join(msg.roomId)
         socket.broadcast.to(msg.roomId).emit('new-peer', msg.peerId)
+        socket.on('disconnect',()=>{
+            console.log(msg.peerId+" disconnected")
+            socket.broadcast.to(msg.roomId).emit('user-hangedup', msg.peerId);
+        })
     })
 
     socket.on('send message',(msg)=>{

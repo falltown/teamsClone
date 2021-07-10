@@ -13,6 +13,7 @@
         var socket = io()
         var peer = new Peer()
         var name = localStorage.getItem('username')
+        const videostreams ={}
 
         var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             
@@ -27,6 +28,7 @@
                 document.querySelector('#videos').appendChild(video)
 
                 peer.on('call',(call)=>{
+                    console.log(call)
                     call.answer(mystream)
                     let video = document.createElement('video')
                     call.on('stream', (remoteStream) => {
@@ -36,6 +38,10 @@
                         })
                         document.querySelector('#videos').appendChild(video)
                     });
+                    call.on('close',()=>{
+                        video.remove()
+                    })
+                    videostreams[call.peer]=call;
                 })
 
                 socket.on('new-peer',(peerId)=>{
@@ -48,11 +54,23 @@
                         })
                         document.querySelector('#videos').appendChild(video)
                     });
+                    call.on('close',()=>{
+                        video.remove()
+                    })
+                    videostreams[peerId]=call;
                 })
 
             }, function(err) {
                 console.log('Failed to get local stream' ,err);
             });
+
+            socket.on('user-hangedup',(peerId)=>{
+                console.log(peerId+"disconnected")
+                if(videostreams[peerId])
+                {
+                    videostreams[peerId].close();
+                }
+            })
 
             document.addEventListener('DOMContentLoaded', ()=>{
                 let form = document.querySelector('#textbox')
