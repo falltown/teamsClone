@@ -1,35 +1,45 @@
 const form = document.querySelector("#reg-form")
-        form.addEventListener('submit',registeruser)
 
-        async function registeruser(event) {
-            event.preventDefault()
-            const username = document.getElementById('username').value
-            const password = document.getElementById('password').value
+//calling registeruser function on submission of registration form
+form.addEventListener('submit',registeruser)
 
+async function registeruser(event) {
 
-            document.getElementById('username').value="";
-            document.getElementById('password').value="";
+    //preventing page from reloading
+    event.preventDefault()
 
-            const result = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    password
-                })
-            }).then((res)=>res.json())
+    //getting username and password from form
+    const username = document.getElementById('username').value
+    const password = document.getElementById('password').value
 
-            if(result.status ==='ok')
-            {
-                alert("Registration Successful")
-            }
-            else
-            {
-                alert(result.error)
-            }
-            
-            
+    //resetting the values in the form
+    document.getElementById('username').value="";
+    document.getElementById('password').value="";
 
-        }
+    //making a fetch request to registration API
+    const result = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    }).then((res)=>res.json())
+
+    //checking result of login request
+    if(result.status ==='ok')
+    {
+        //generating alert in case of succcessful registration
+        alert("Registration Successful")
+    }
+    else
+    {
+        //generating alert in case of error
+        alert(result.error)
+    }
+    
+    
+
+}

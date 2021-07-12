@@ -34,15 +34,17 @@ app.post('/api/register',(req,res)=>{
     })
     user.save()
     .then(result=>{
+        //returning staus "ok" on successful registration
         console.log("user created");
             res.json({
             status: 'ok'
         })
     })
     .catch(err=>{
+        //returning error in case of unsuccessful registration
         console.log("error");
         res.status(500).json({
-            error: err
+            error: "Registration failed. Try a different username."
         })
     })
 })
@@ -56,6 +58,7 @@ app.post('/api/login',(req,res)=>{
     .then(docs =>{
         if(docs.length==0)
         {
+            //returning error in case of invalid username
             console.log("invalid username")
             return res.json({
                 status: "error",
@@ -64,6 +67,7 @@ app.post('/api/login',(req,res)=>{
         }
         else if(docs[0].password === req.body.password)
         {
+            //returning jwt token in case of successful login
             console.log("authenticated") 
             const token = jwt.sign({ id: docs[0]._id, username: docs[0].username },JWT_SECRET)
             return res.json({
@@ -74,6 +78,7 @@ app.post('/api/login',(req,res)=>{
         }
         else
         {
+            //returning error in case of incorrect password
             console.log("incorrect password")
             return res.json({
                 status: "error",
