@@ -12,7 +12,7 @@ const JWT_SECRET = 'wenwajfkwiblebakjubwdfbwaugbuwb'
 
 var names = [] 
 
-
+//connecting to mongoose database
 mongoose.connect('mongodb+srv://node-rest:node-rest@node-rest-shop.nxem7.mongodb.net/authapp?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -21,8 +21,11 @@ mongoose.connect('mongodb+srv://node-rest:node-rest@node-rest-shop.nxem7.mongodb
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
+
+//setting view-engine to ejs
 app.set('view engine', 'ejs');
 
+// API for registration
 app.post('/api/register',(req,res)=>{
     console.log(req.body)
     const user = new User({
@@ -44,6 +47,7 @@ app.post('/api/register',(req,res)=>{
     })
 })
 
+// API for login
 app.post('/api/login',(req,res)=>{
     console.log(req.body)
     User.find({username: req.body.username})
@@ -83,19 +87,17 @@ app.post('/api/login',(req,res)=>{
 })
 
 
-
-
-
-
+// Rendering home page
 app.get('/home',(req,res)=>{
     res.render('home.ejs')
 })
 
-
+// Renddering chat room
 app.get('/room/:roommid',(req,res)=>{
     res.render('room.ejs',{ id: req.params.roomid })
 })
 
+// setting 'public' folder as static
 app.use(express.static('public'))
 
 io.on('connection', (socket) => {
@@ -131,7 +133,9 @@ io.on('connection', (socket) => {
     })
 })
 
+// setting PORT to the port offered by the hosting service
 const PORT = process.env.PORT || 5000
+
 
 server.listen(PORT,()=>{
     console.log(`listening to ${PORT}`)

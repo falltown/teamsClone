@@ -55,6 +55,10 @@
             width:25vw;
             background-color: white;
         }
+        .btn{
+            /* padding: 0 50px 0 50px; */
+            margin: 0 5px 0 5px;
+        }
     </style>
 </head>
 <body>
@@ -80,8 +84,9 @@
     
     
     <div class="nav">
+        <button class="btn btn-dark mb-3" id="micbtn" onclick="toggleMic()">Mute</button>
         <button class="btn btn-danger mb-3" onclick="window.location.href='/home'">End Call</button>
-        
+        <button class="btn btn-dark mb-3" id="cambtn" onclick="toggleCam()">Turn off camera</button>
     </div>
     
     
