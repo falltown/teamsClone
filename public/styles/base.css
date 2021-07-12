@@ -1,0 +1,14 @@
+body{
+    background-color: azure;
+}
+form{
+    max-width: 350px;
+    margin: auto;
+}
+a{
+    width: 49%;
+    box-sizing: border-box;
+}
+.extra-btns{
+    max-width: 350px;
+}
