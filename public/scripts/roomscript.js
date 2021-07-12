@@ -18,7 +18,6 @@ var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || nav
 getUserMedia({video: true, audio: true}, (mystream) => {
     myvideo = mystream;
 
-
     //adding user video to videos
     let video = document.createElement('video')
     video.muted =true
@@ -35,6 +34,9 @@ getUserMedia({video: true, audio: true}, (mystream) => {
         //sending user stream as answer to call
         call.answer(mystream)
 
+        //adding call to the list of ongoing calls
+        videostreams[call.peer]=call;
+
         //adding stream from the call to videos
         let video = document.createElement('video')
         call.on('stream', (remoteStream) => {
@@ -49,15 +51,15 @@ getUserMedia({video: true, audio: true}, (mystream) => {
         call.on('close',()=>{
             video.remove()
         })
-
-        //adding call to the list of ongoing calls
-        videostreams[call.peer]=call;
     })
 
     //listening to server for new peers
     socket.on('new-peer',(peerId)=>{
         //calling new peer
         const call = peer.call(peerId, mystream)
+
+        //adding call to list of ongoing calls
+        videostreams[peerId]=call;
 
         //adding peer's stream to videos
         let video = document.createElement('video')
@@ -72,10 +74,7 @@ getUserMedia({video: true, audio: true}, (mystream) => {
         //removing video element from videos in case of disconnection
         call.on('close',()=>{
             video.remove()
-        })
-
-        //adding call to list of ongoing calls
-        videostreams[peerId]=call;
+        })        
     })
 
 }, function(err) {
