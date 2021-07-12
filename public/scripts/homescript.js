@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             document.querySelector('#accept').onclick = () =>{
                 window.location.href = `room/${msg.callerName}`
             }
+            setTimeout(()=>{window.location.href='/home'},10000)
         }
     })
 

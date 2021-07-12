@@ -106,11 +106,14 @@ app.get('/room/:roommid',(req,res)=>{
 app.use(express.static('public'))
 
 io.on('connection', (socket) => {
+
+    //sending list of online users to all clients on joining of new client
     socket.on('name',(name)=>{
         names.push(name)
         io.emit('onlineusers',names)
     })
 
+    
     socket.on('call',(msg)=>{
         io.emit('called',msg)
     })
