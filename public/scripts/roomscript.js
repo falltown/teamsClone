@@ -1,4 +1,3 @@
-const roomId = "<%= id %>"
 var socket = io()
 
 //creating a new peer

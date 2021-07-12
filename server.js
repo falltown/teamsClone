@@ -98,8 +98,8 @@ app.get('/home',(req,res)=>{
 })
 
 // Renddering chat room
-app.get('/room/:roommid',(req,res)=>{
-    res.render('room.ejs',{ id: req.params.roomid })
+app.get('/room/:roomid',(req,res)=>{
+    res.render('room',{ id: req.params.roomid })
 })
 
 // setting 'public' folder as static
