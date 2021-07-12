@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- <script type="text/javascript" src="/loginscript.js"></script> -->
     <style>
         body{
             background-color: azure;
@@ -13,8 +12,6 @@
         form{
             max-width: 350px;
             margin: auto;
-            
-            /* background-color: white; */
         }
         a{
             width: 49%;
@@ -45,56 +42,6 @@
             <a href="register.html" type="button" class="btn btn-dark mt-3">Register</a>
         </div>
     </div>
-
-    <!-- <div class="container">
-        
-    </div> -->
-    
-
-
-
-
-
-    <script>
-        const form = document.querySelector("#login-form")
-        form.addEventListener('submit',registeruser)
-
-        async function registeruser(event) {
-            event.preventDefault()
-            const username = document.getElementById('username').value
-            const password = document.getElementById('password').value
-
-
-            document.getElementById('username').value="";
-            document.getElementById('password').value="";
-
-            const result = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    password
-                })
-            }).then((res)=>res.json())
-            
-            if(result.status ==='ok')
-            {
-                // alert("token recieved")
-                // console.log('got the token:',result.data)
-                localStorage.setItem('token',result.data)
-                localStorage.setItem('username',result.username)
-                window.location.href = "/home"
-                
-            }
-            else
-            {
-                alert(result.error)
-            }
-            
-
-        }
-    </script>
+    <script type="text/javascript" src="/loginscript.js"></script>
 </body>
 </html>

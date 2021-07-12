@@ -13,8 +13,6 @@
         form{
             max-width: 350px;
             margin: auto;
-            
-            /* background-color: white; */
         }
         a{
             width: 49%;
@@ -47,46 +45,6 @@
         
 
     </div>
-    
-
-
-
-    <script>
-        const form = document.querySelector("#reg-form")
-        form.addEventListener('submit',registeruser)
-
-        async function registeruser(event) {
-            event.preventDefault()
-            const username = document.getElementById('username').value
-            const password = document.getElementById('password').value
-
-
-            document.getElementById('username').value="";
-            document.getElementById('password').value="";
-
-            const result = await fetch('/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    password
-                })
-            }).then((res)=>res.json())
-
-            if(result.status ==='ok')
-            {
-                alert("Registration Successful")
-            }
-            else
-            {
-                alert(result.error)
-            }
-            
-            
-
-        }
-    </script>
+    <script type="text/javascript" src="/registerscript.js"></script>
 </body>
 </html>
